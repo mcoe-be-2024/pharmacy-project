@@ -1,36 +1,33 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, TextInput, View, TouchableOpacity } from 'react-native';
 import {colors} from '../styles/Colors';
+import { MaterialIcons } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 
-export const Login = ({route, navigation}) => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const {userType} = route.params;
-
+export const LoginType = ({navigation}) => {
     return (
         <>
         <View style={styles.container}>
-            {(userType === "Admin" || userType === "User") &&
-                <>
-                    {/* <TouchableOpacity style={styles.backButton} onPress={resetUserType}>
-                        <Ionicons style={styles.backButtonIcon} name="arrow-back"/>
-                    </TouchableOpacity> */}
-                    <Text style={[styles.title, {marginBottom: 30}]}>{userType} Login</Text>
-                    <View style={styles.inputContainer}>
-                        <TextInput style={styles.input} value={email} onChangeText={(newEmail) => setEmail(newEmail)} />
-                        <Text style={styles.label}>Email</Text>
-                    </View>
-                    <View style={styles.inputContainer}>
-                        <TextInput style={styles.input} value={password} onChangeText={(newPassword) => setPassword(newPassword)} />
-                        <Text style={styles.label}>Password</Text>
-                    </View>
-                    <View style={styles.submitContainer}>
-                        <TouchableOpacity style={styles.submitButton}>
-                            <Text style={styles.submitText}>Log In</Text>
-                        </TouchableOpacity>
-                    </View>
-                </>
-            }
+            <Text style={styles.title}>Login</Text>
+            <View style={styles.buttonGroup}>
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity onPress={() => navigation.navigate("Login", {userType: "User"})}>
+                        <View style={styles.buttonIconContainer}>
+                            <Entypo style={styles.buttonIcon} name="user"/>
+                        </View>
+                    </TouchableOpacity>
+                    <Text style={styles.buttonText}>User</Text>
+                </View>
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity onPress={() => navigation.navigate("Login", {userType: "Admin"})}>
+                        <View style={styles.buttonIconContainer}>
+                            <MaterialIcons style={styles.buttonIcon} name="admin-panel-settings"/>
+                        </View>
+                    </TouchableOpacity>
+                    <Text style={styles.buttonText}>Admin</Text>
+                </View>
+            </View>
         </View>
         </>
     );

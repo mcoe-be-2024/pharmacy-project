@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, TextInput, View, TouchableOpacity } from 'react-native';
 import {colors} from '../styles/Colors';
 
-export const Login = ({route, navigation}) => {
+export const Register = ({route, navigation}) => {
+    const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const {userType} = route.params;
@@ -12,10 +13,11 @@ export const Login = ({route, navigation}) => {
         <View style={styles.container}>
             {(userType === "Admin" || userType === "User") &&
                 <>
-                    {/* <TouchableOpacity style={styles.backButton} onPress={resetUserType}>
-                        <Ionicons style={styles.backButtonIcon} name="arrow-back"/>
-                    </TouchableOpacity> */}
-                    <Text style={[styles.title, {marginBottom: 30}]}>{userType} Login</Text>
+                    <Text style={[styles.title, {marginBottom: 30}]}>{userType} Registration</Text>
+                    <View style={styles.inputContainer}>
+                        <TextInput style={styles.input} value={name} onChangeText={(newName) => setName(newName)} />
+                        <Text style={styles.label}>Name</Text>
+                    </View>
                     <View style={styles.inputContainer}>
                         <TextInput style={styles.input} value={email} onChangeText={(newEmail) => setEmail(newEmail)} />
                         <Text style={styles.label}>Email</Text>

@@ -4,14 +4,13 @@ import {colors} from '../styles/Colors';
 import {Button} from '../components/Button';
 import logo from '../assets/logo.png';
 
-export const Landing = () => {
-    const [someText, setSomeText] = useState("");
+export const Landing = ({navigation}) => {
 
     const handleRegister = () => {
-        setSomeText("Registered")
+        navigation.navigate("RegisterType");
     }
     const handleLogin = () => {
-        setSomeText("Logged in")
+        navigation.navigate("LoginType");
     }
 
     return (
@@ -23,7 +22,6 @@ export const Landing = () => {
                 <Button onPress={handleRegister} text="Register" />
                 <Button onPress={handleLogin} text="Login" />
             </View>
-            <Text>{someText}</Text>
         </View>
     );
 }
@@ -34,6 +32,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         width: "100%",
+        backgroundColor: colors.lightColor2,
     },
     title: {
         fontSize: 30,
