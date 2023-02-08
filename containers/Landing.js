@@ -1,16 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, View, Image } from 'react-native';
 import {colors} from '../styles/Colors';
-import Button from '../components/Button';
+import {Button} from '../components/Button';
 import logo from '../assets/logo.png';
 
-export default Landing = () => {
+export const Landing = () => {
+    const [someText, setSomeText] = useState("");
 
     const handleRegister = () => {
-        
+        setSomeText("Registered")
     }
     const handleLogin = () => {
-
+        setSomeText("Logged in")
     }
 
     return (
@@ -22,6 +23,7 @@ export default Landing = () => {
                 <Button onPress={handleRegister} text="Register" />
                 <Button onPress={handleLogin} text="Login" />
             </View>
+            <Text>{someText}</Text>
         </View>
     );
 }
