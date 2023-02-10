@@ -1,11 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, TextInput, View, TouchableOpacity } from 'react-native';
 import {colors} from '../styles/Colors';
+import { auth } from '../firebase';
 
 export const Login = ({route, navigation}) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const {userType} = route.params;
+
+    // useEffect(() => {
+    //     const unsubscribe = auth.onAuthStateChanged((user) => {
+    //         if(user) {
+    //             navigation.navigate("Home");
+    //         }
+    //     })
+
+    //     return unsubscribe;
+    // }, []);
+
+    const handleLogin = () => {
+        auth
+        .signInWithEmailAndPassword(email, password)
+        .then(userCredentials => {
+            const user = userCredentials.user;
+            // console.log('Logged in with:', user.email);
+        })
+        .catch(error => alert(error.message))
+    }
 
     return (
         <>
@@ -25,7 +46,7 @@ export const Login = ({route, navigation}) => {
                         <Text style={styles.label}>Password</Text>
                     </View>
                     <View style={styles.submitContainer}>
-                        <TouchableOpacity style={styles.submitButton}>
+                        <TouchableOpacity style={styles.submitButton} onPress={handleLogin}>
                             <Text style={styles.submitText}>Log In</Text>
                         </TouchableOpacity>
                     </View>

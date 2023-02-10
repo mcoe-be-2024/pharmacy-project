@@ -1,10 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Image } from 'react-native';
 import {colors} from '../styles/Colors';
 import {Button} from '../components/Button';
 import logo from '../assets/logo.png';
+import { auth } from "../firebase";
 
 export const Landing = ({navigation}) => {
+
+    // useEffect(() => {
+    //     const unsubscribe = auth.onAuthStateChanged((user) => {
+    //         if(user) {
+    //             navigation.navigate("Home");
+    //         }
+    //     })
+    //     return unsubscribe;
+    // }, []);
 
     const handleRegister = () => {
         navigation.navigate("RegisterType");

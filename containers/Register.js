@@ -1,12 +1,36 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, TextInput, View, TouchableOpacity } from 'react-native';
 import {colors} from '../styles/Colors';
+import { auth, createUserDocument } from '../firebase';
 
 export const Register = ({route, navigation}) => {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const {userType} = route.params;
+
+    // useEffect(() => {
+    //     const unsubscribe = auth.onAuthStateChanged((user) => {
+    //         if(user) {
+    //             navigation.navigate("Home");
+    //         }
+    //     })
+
+    //     return unsubscribe;
+    // }, []);
+    
+
+    const handleSignUp = () => {
+        auth
+        .createUserWithEmailAndPassword(email, password)
+        .then(async (userCredentials) => {
+            const user = userCredentials.user;
+            console.log('Registered with:', user.email);
+            user.updateProfile({displayName: name});
+            await createUserDocument(user, {name, userType})
+        })
+        .catch(error => alert(error.message))
+    }
 
     return (
         <>
@@ -27,8 +51,8 @@ export const Register = ({route, navigation}) => {
                         <Text style={styles.label}>Password</Text>
                     </View>
                     <View style={styles.submitContainer}>
-                        <TouchableOpacity style={styles.submitButton}>
-                            <Text style={styles.submitText}>Log In</Text>
+                        <TouchableOpacity style={styles.submitButton} onPress={handleSignUp}>
+                            <Text style={styles.submitText}>Register</Text>
                         </TouchableOpacity>
                     </View>
                 </>
