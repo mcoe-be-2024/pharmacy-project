@@ -11,6 +11,7 @@ import {Register} from './containers/Register';
 import {LoginType} from './containers/LoginType';
 import {RegisterType} from './containers/RegisterType';
 import {Home} from './containers/Home';
+import {Output} from './containers/Output';
 import { auth } from "./firebase";
 
 export default function App() {
@@ -44,6 +45,7 @@ export default function App() {
           ) : (
             <>
               <Stack.Screen name="Home" component={Home} />
+              <Stack.Screen name="Output" component={Output} />
             </>
           )}
         </Stack.Navigator>

@@ -81,6 +81,13 @@ export function Home({ navigation }) {
 			});
 	}
 
+	useEffect(() => {
+		if (output.length !== 0) {
+			navigation.navigate("Output", {drugs: output});
+		}
+	}, [output]);
+	
+
 	return (
 		<ScrollView contentContainerStyle={styles.scrollContainer}>
 			{/* <Text>User: {currentUser?.name}</Text> */}
@@ -122,9 +129,9 @@ export function Home({ navigation }) {
 					<Text style={styles.submitText}>Generate Prescription</Text>
 				</TouchableOpacity>
 			</View>
-			{output.map((drug) => {
+			{/* {output.map((drug) => {
 				return <Text>{drug["Name of the drug"]}</Text>
-			})}
+			})} */}
 		</ScrollView>
 	);
 }
