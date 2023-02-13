@@ -3,9 +3,9 @@ import { StyleSheet, Text, ScrollView, View, Image, TouchableOpacity } from 'rea
 import {colors} from '../styles/Colors';
 import {Button} from '../components/Button';
 import logo from '../assets/logo.png';
-import { auth } from "../firebase";
+import { auth } from "../assets/firebase";
 
-export const Output = ({route, navigation}) => {
+export default Output = ({route, navigation}) => {
     const {drugs} = route.params;
 
     console.log(drugs);

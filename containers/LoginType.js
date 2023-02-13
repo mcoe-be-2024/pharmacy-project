@@ -5,7 +5,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 
-export const LoginType = ({navigation}) => {
+export default LoginType = ({navigation}) => {
     return (
         <>
         <View style={styles.container}>

@@ -46,6 +46,22 @@ const createUserDocument = async (user, additionalData) => {
   }
 }
 
+const getUserDocument = async (user) => {
+  console.log("user in firebase: ", user?.email)
+  firestore.collection("users")
+  .where("email", "==", user?.email)
+  .get()
+  .then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        console.log("docdata firebase",doc.data())
+        return (doc.data());
+      })
+  })
+  .catch((error) => {
+      alert(error);
+  });
+}
+
 // drugDataFirestore(app);
 
-export { auth, firestore, createUserDocument }; // app, 
+export { auth, firestore, createUserDocument, getUserDocument }; // app, 

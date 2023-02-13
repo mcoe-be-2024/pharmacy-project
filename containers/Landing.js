@@ -3,9 +3,9 @@ import { StyleSheet, Text, View, Image } from 'react-native';
 import {colors} from '../styles/Colors';
 import {Button} from '../components/Button';
 import logo from '../assets/logo.png';
-import { auth } from "../firebase";
+import { auth } from "../assets/firebase";
 
-export const Landing = ({navigation}) => {
+export default Landing = ({navigation}) => {
 
     // useEffect(() => {
     //     const unsubscribe = auth.onAuthStateChanged((user) => {

@@ -3,7 +3,7 @@ import { StyleSheet, Text, TextInput, View, TouchableOpacity } from 'react-nativ
 import {colors} from '../styles/Colors';
 import drugData from "../assets/drugData.json";
 
-export const Test = () => {
+export default Test = () => {
     
 
     return (

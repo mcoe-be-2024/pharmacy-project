@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, TextInput, View, ScrollView, Button, Alert, TouchableOpacity } from 'react-native';
 import SelectDropdown from 'react-native-select-dropdown';
 import { colors } from '../styles/Colors';
-import { auth, firestore } from "../firebase";
+import { auth, firestore } from "../assets/firebase";
 import { MaterialIcons } from '@expo/vector-icons';
 import drugData from "../assets/drugData.json";
+import { useAuth } from "../hooks";
 
-export function Home({ navigation }) {
-	const [currentUser, setCurrentUser] = useState({});
+export default function Home({ navigation }) {
+	const {currentUser, setCurrentUser} = useAuth();
 	const [drugsList, setDrugsList] = useState([]);
 	const [drugName, setDrugName] = useState("");
 	const [gestationalAge, setGestationalAge] = useState("");
@@ -22,9 +23,7 @@ export function Home({ navigation }) {
 		setDrugsList([...new Set(tempDrugList)]);
 	}, []);
 
-	const usersDB = firestore.collection("users");
 	const drugsDB = firestore.collection("drugs");
-	const query = usersDB.where("email", "==", auth?.currentUser?.email);
 
 	useEffect(() => {
 		navigation.setOptions({
@@ -39,19 +38,6 @@ export function Home({ navigation }) {
 	}, [navigation]);
 
 	useEffect(() => {
-		query
-			.get()
-			.then((querySnapshot) => {
-				querySnapshot.forEach((doc) => {
-					setCurrentUser(doc.data())
-				})
-			})
-			.catch((error) => {
-				alert(error);
-			});
-	}, []);
-
-	useEffect(() => {
 		console.log(output)
 	}, [output]);
 
@@ -59,7 +45,7 @@ export function Home({ navigation }) {
 		auth
 			.signOut()
 			.then(() => {
-				// navigation.replace("Landing");
+				setCurrentUser(null)
 			})
 			.catch(error => alert(error.message))
 	}

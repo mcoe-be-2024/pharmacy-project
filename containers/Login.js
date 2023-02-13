@@ -1,31 +1,41 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, TextInput, View, TouchableOpacity } from 'react-native';
 import {colors} from '../styles/Colors';
-import { auth } from '../firebase';
+import { auth, firestore } from '../assets/firebase';
+import { useAuth } from "../hooks";
 
-export const Login = ({route, navigation}) => {
+export default Login = ({route, navigation}) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const {userType} = route.params;
-
-    // useEffect(() => {
-    //     const unsubscribe = auth.onAuthStateChanged((user) => {
-    //         if(user) {
-    //             navigation.navigate("Home");
-    //         }
-    //     })
-
-    //     return unsubscribe;
-    // }, []);
+    const {currentUser, setCurrentUser} = useAuth();
 
     const handleLogin = () => {
-        auth
-        .signInWithEmailAndPassword(email, password)
-        .then(userCredentials => {
-            const user = userCredentials.user;
-            // console.log('Logged in with:', user.email);
-        })
-        .catch(error => alert(error.message))
+        if (!currentUser?.email) {
+            auth
+            .signInWithEmailAndPassword(email, password)
+            .then(userCredentials => {
+                const user = userCredentials.user;
+                // console.log('Logged in with:', user);
+                firestore.collection("users")
+                .where("email", "==", user?.email)
+                .get()
+                .then((querySnapshot) => {
+                    querySnapshot.forEach((doc) => {
+                        if (doc.data()?.userType === userType) {
+                            setCurrentUser(doc.data());
+                        }
+                        else {
+                            alert(`You are not registered as ${userType}`)
+                        }
+                    })
+                })
+                .catch((error) => {
+                    alert(error);
+                });
+            })
+            .catch(error => alert(error.message))
+        }
     }
 
     return (

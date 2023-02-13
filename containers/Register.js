@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, TextInput, View, TouchableOpacity } from 'react-native';
 import {colors} from '../styles/Colors';
-import { auth, createUserDocument } from '../firebase';
+import { auth, createUserDocument, firestore } from '../assets/firebase';
+import { useAuth } from "../hooks";
 
-export const Register = ({route, navigation}) => {
+export default Register = ({route, navigation}) => {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const {userType} = route.params;
+    const {currentUser, setCurrentUser} = useAuth();
 
     // useEffect(() => {
     //     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -25,9 +27,24 @@ export const Register = ({route, navigation}) => {
         .createUserWithEmailAndPassword(email, password)
         .then(async (userCredentials) => {
             const user = userCredentials.user;
-            console.log('Registered with:', user.email);
-            user.updateProfile({displayName: name});
-            await createUserDocument(user, {name, userType})
+            // console.log('Registered with:', user.email);
+            await createUserDocument(user, {name, userType});
+            firestore.collection("users")
+            .where("email", "==", user?.email)
+            .get()
+            .then((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    if (doc.data()?.userType === userType) {
+                        setCurrentUser(doc.data());
+                    }
+                    else {
+                        alert(`You are not registered as ${userType}`)
+                    }
+                })
+            })
+            .catch((error) => {
+                alert(error);
+            });
         })
         .catch(error => alert(error.message))
     }

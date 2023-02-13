@@ -5,7 +5,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 
-export const RegisterType = ({navigation}) => {
+export default RegisterType = ({navigation}) => {
     return (
         <>
         <View style={styles.container}>
