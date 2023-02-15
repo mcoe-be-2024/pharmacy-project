@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import {colors} from '../styles/Colors';
 
-export const Button = ({children, text, onPress}) => {
+export default Button = ({children, text, onPress}) => {
     return (
         <TouchableOpacity onPress={onPress}>
             <View style={styles.container}>
@@ -22,10 +22,15 @@ const styles = StyleSheet.create({
         borderColor: colors.primaryColor,
         borderWidth: 2,
         flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
     },
     text: {
-        fontSize: 20,
+        fontSize: 18,
         color: colors.white,
+        fontFamily: "Montserrat",
+        // textAlign: "center",
+        width: "100%",
     },
     
 });

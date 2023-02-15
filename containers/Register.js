@@ -88,8 +88,9 @@ const styles = StyleSheet.create({
         backgroundColor: colors.lightColor2,
     },
     title: {
-        fontSize: 30,
+        fontSize: 26,
         marginBottom: 20,
+        fontFamily: "MontserratBold",
     },
     subtitle: {
         fontSize: 25,
@@ -143,6 +144,7 @@ const styles = StyleSheet.create({
         fontSize: 17,
         borderColor: colors.primaryColor,
         borderWidth: 1,
+        fontFamily: "Montserrat",
     },
     label: {
         position: "absolute",
@@ -154,6 +156,7 @@ const styles = StyleSheet.create({
         paddingVertical: 3,
         borderRadius: 10,
         color: colors.white,
+        fontFamily: "MontserratBold",
     },
     submitContainer: {
         width: "80%",
@@ -170,6 +173,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         fontSize: 18,
         color: colors.white,
+        fontFamily: "MontserratBold",
     },
     backButton: {
         textAlign: "center",

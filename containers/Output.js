@@ -1,21 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, ScrollView, View, Image, TouchableOpacity } from 'react-native';
 import {colors} from '../styles/Colors';
-import {Button} from '../components/Button';
+import {Button} from '../components';
 import logo from '../assets/logo.png';
 import { auth } from "../assets/firebase";
 
 export default Output = ({route, navigation}) => {
     const {drugs} = route.params;
 
-    console.log(drugs);
+    // console.log(drugs);
 
     return (
         <ScrollView contentContainerStyle={styles.scrollContainer}>
             <Text style={styles.title}>{drugs[0]["Name of the drug"]}</Text>
-            {drugs.map((drug) => {
+            {drugs.map((drug, index) => {
                 return (
-                    <View style={styles.contentContainer}>
+                    <View style={styles.contentContainer} key={index}>
                         <Text style={styles.subtitleLabel}>Conditon:</Text>
                         <Text style={styles.subtitle}>{drug["Condition"] ? drug["Condition"] : "No condition"}</Text>
                         <Text style={styles.subtitleLabel}>Solution Compatibility:</Text>
@@ -24,8 +24,8 @@ export default Output = ({route, navigation}) => {
             })
             }
             <View style={styles.submitContainer}>
-				<TouchableOpacity style={styles.submitButton} >
-					<Text style={styles.submitText}>Generate Prescription</Text>
+				<TouchableOpacity style={styles.submitButton} onPress={() => navigation.goBack()}>
+					<Text style={styles.submitText}>Generate New Prescription</Text>
 				</TouchableOpacity>
 			</View>
         </ScrollView>
@@ -49,12 +49,13 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 20,
-        fontWeight: "bold",
+        // fontWeight: "bold",
         marginVertical: 20,
         padding: 5,
         color: colors.darkColor1,
         borderBottomColor: colors.primaryColor,
         borderBottomWidth: 2,
+        fontFamily: "MontserratThick",
     },
     contentContainer : {
         // flex: 1,
@@ -73,15 +74,17 @@ const styles = StyleSheet.create({
         marginBottom: 5,
         width: "100%",
         paddingHorizontal: 15,
+        fontFamily: "MontserratBold",
     },
     subtitleLabel: {
         fontSize: 14,
         color: colors.darkColor1,
-        fontWeight: "bold",
+        // fontWeight: "bold",
         // flex: 1,
         justifyContent: "flex-start",
         width: "100%",
         paddingHorizontal: 15,
+        fontFamily: "MontserratThick",
     },
     logo: {
         width: 200,
@@ -89,7 +92,8 @@ const styles = StyleSheet.create({
         marginBottom: 20,
     },
     submitContainer: {
-		width: "60%",
+		width: "70%",
+        marginBottom: 30,
 	},
 	submitButton: {
 		width: "100%",
@@ -103,5 +107,6 @@ const styles = StyleSheet.create({
 		justifyContent: "center",
 		fontSize: 17,
 		color: colors.white,
+        fontFamily: "MontserratBold",
 	},
 });

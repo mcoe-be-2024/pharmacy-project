@@ -4,64 +4,28 @@ import {colors} from '../styles/Colors';
 import { auth, firestore } from '../assets/firebase';
 import { useAuth } from "../hooks";
 
-export default Login = ({route, navigation}) => {
+export default Profile = ({route, navigation}) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const {userType} = route.params;
     const {currentUser, setCurrentUser} = useAuth();
-
-    const handleLogin = () => {
-        if (!currentUser?.email) {
-            auth
-            .signInWithEmailAndPassword(email, password)
-            .then(userCredentials => {
-                const user = userCredentials.user;
-                // console.log('Logged in with:', user);
-                firestore.collection("users")
-                .where("email", "==", user?.email)
-                .get()
-                .then((querySnapshot) => {
-                    querySnapshot.forEach((doc) => {
-                        if (doc.data()?.userType === userType) {
-                            setCurrentUser(doc.data());
-                        }
-                        else {
-                            alert(`You are not registered as ${userType}`)
-                        }
-                    })
-                })
-                .catch((error) => {
-                    alert(error);
-                });
-            })
-            .catch(error => alert(error.message))
-        }
-    }
 
     return (
         <>
         <View style={styles.container}>
-            {(userType === "Admin" || userType === "User") &&
-                <>
-                    {/* <TouchableOpacity style={styles.backButton} onPress={resetUserType}>
-                        <Ionicons style={styles.backButtonIcon} name="arrow-back"/>
-                    </TouchableOpacity> */}
-                    <Text style={[styles.title, {marginBottom: 30}]}>{userType} Login</Text>
-                    <View style={styles.inputContainer}>
-                        <TextInput style={styles.input} value={email} onChangeText={(newEmail) => setEmail(newEmail)} />
-                        <Text style={styles.label}>Email</Text>
-                    </View>
-                    <View style={styles.inputContainer}>
-                        <TextInput style={styles.input} value={password} onChangeText={(newPassword) => setPassword(newPassword)} />
-                        <Text style={styles.label}>Password</Text>
-                    </View>
-                    <View style={styles.submitContainer}>
-                        <TouchableOpacity style={styles.submitButton} onPress={handleLogin}>
-                            <Text style={styles.submitText}>Log In</Text>
-                        </TouchableOpacity>
-                    </View>
-                </>
-            }
+            <Text style={[styles.title, {marginBottom: 30}]}>My Profile</Text>
+            <View style={styles.inputContainer}>
+                <TextInput style={styles.input} value={email} onChangeText={(newEmail) => setEmail(newEmail)} />
+                <Text style={styles.label}>Email</Text>
+            </View>
+            <View style={styles.inputContainer}>
+                <TextInput style={styles.input} value={password} onChangeText={(newPassword) => setPassword(newPassword)} />
+                <Text style={styles.label}>Password</Text>
+            </View>
+            <View style={styles.submitContainer}>
+                <TouchableOpacity style={styles.submitButton}>
+                    <Text style={styles.submitText}>Log In</Text>
+                </TouchableOpacity>
+            </View>
         </View>
         </>
     );
@@ -132,7 +96,7 @@ const styles = StyleSheet.create({
         fontSize: 17,
         borderColor: colors.primaryColor,
         borderWidth: 1,
-        fontFamily: "Montserrat",
+        fontFamily: "MontserratBold",
     },
     label: {
         position: "absolute",

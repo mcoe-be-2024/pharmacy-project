@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Image } from 'react-native';
 import {colors} from '../styles/Colors';
-import {Button} from '../components/Button';
+import {Button} from '../components';
 import logo from '../assets/logo.png';
 import { auth } from "../assets/firebase";
 
@@ -47,9 +47,11 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 30,
         marginBottom: 20,
+        fontFamily: "MontserratBold",
     },
     subtitle: {
-        fontSize: 25,
+        fontSize: 23,
+        fontFamily: "MontserratBold",
     },
     logo: {
         width: 200,

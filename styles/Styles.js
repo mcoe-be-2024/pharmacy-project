@@ -7,5 +7,6 @@ export const styles = StyleSheet.create({
         backgroundColor: colors.lightColor2,
         alignItems: 'center',
         justifyContent: 'center',
+        fontFamily: "Montserrat",
     },
 });

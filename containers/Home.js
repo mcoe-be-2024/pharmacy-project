@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, TextInput, View, ScrollView, Button, Alert, TouchableOpacity } from 'react-native';
+import { Dropdown } from "../components";
 import SelectDropdown from 'react-native-select-dropdown';
 import { colors } from '../styles/Colors';
 import { auth, firestore } from "../assets/firebase";
@@ -8,12 +9,13 @@ import drugData from "../assets/drugData.json";
 import { useAuth } from "../hooks";
 
 export default function Home({ navigation }) {
-	const {currentUser, setCurrentUser} = useAuth();
+	const { currentUser, setCurrentUser } = useAuth();
 	const [drugsList, setDrugsList] = useState([]);
 	const [drugName, setDrugName] = useState("");
 	const [gestationalAge, setGestationalAge] = useState("");
 	const [postnatalAge, setPostnatalAge] = useState("");
 	const [weight, setWeight] = useState("");
+	const [height, setHeight] = useState("");
 	const [output, setOutput] = useState([]);
 
 	useEffect(() => {
@@ -25,30 +27,38 @@ export default function Home({ navigation }) {
 
 	const drugsDB = firestore.collection("drugs");
 
-	useEffect(() => {
-		navigation.setOptions({
-			headerRight: () => (
-				<TouchableOpacity onPress={handleSignOut}>
-					<View style={styles.logoutIconContainer}>
-						<MaterialIcons style={styles.logoutIcon} name="logout" />
-					</View>
-				</TouchableOpacity>
-			),
-		});
-	}, [navigation]);
+	// useEffect(() => {
+	// 	navigation.setOptions({
+	// 		headerRight: () => (
+	// 			<TouchableOpacity onPress={handleSignOut}>
+	// 				<View style={styles.logoutIconContainer}>
+	// 					<MaterialIcons style={styles.logoutIcon} name="logout" />
+	// 				</View>
+	// 			</TouchableOpacity>
+	// 		),
+	// 	});
+	// }, [navigation]);
 
-	useEffect(() => {
-		console.log(output)
-	}, [output]);
-
-	const handleSignOut = () => {
-		auth
-			.signOut()
-			.then(() => {
-				setCurrentUser(null)
-			})
-			.catch(error => alert(error.message))
+	const resetInputFields = () => {
+		setDrugName("");
+		setGestationalAge("");
+		setPostnatalAge("");
+		setWeight("");
+		setHeight("");
 	}
+
+	useEffect(() => {
+		resetInputFields();
+	}, []);
+
+	// const handleSignOut = () => {
+	// 	auth
+	// 		.signOut()
+	// 		.then(() => {
+	// 			setCurrentUser(null)
+	// 		})
+	// 		.catch(error => alert(error.message))
+	// }
 
 	const generatePrescription = () => {
 		const drugs = [];
@@ -69,10 +79,10 @@ export default function Home({ navigation }) {
 
 	useEffect(() => {
 		if (output.length !== 0) {
-			navigation.navigate("Output", {drugs: output});
+			navigation.navigate("Output", { drugs: output });
 		}
 	}, [output]);
-	
+
 
 	return (
 		<ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -81,11 +91,11 @@ export default function Home({ navigation }) {
 				<SelectDropdown
 					data={drugsList}
 					dropdownStyle={styles.dropdown}
-					searchPlaceHolder='Search'
-					search='true'
+					searchPlaceHolder="Search"
+					search="true"
 					searchInputStyle={styles.dropdownSearch}
 					buttonStyle={styles.dropdownInput}
-					defaultButtonText='Just Select'
+					defaultButtonText="Select drug"
 					onSelect={(selectedItem, index) => {
 						setDrugName(selectedItem)
 					}}
@@ -101,14 +111,22 @@ export default function Home({ navigation }) {
 			<View style={styles.inputContainer}>
 				<TextInput keyboardType='numeric' style={styles.input} value={gestationalAge} onChangeText={(newGestationalAge) => setGestationalAge(newGestationalAge)} />
 				<Text style={styles.label}>Gestational Age</Text>
+				<Text style={styles.suffixText}>weeks</Text>
 			</View>
 			<View style={styles.inputContainer}>
 				<TextInput keyboardType='numeric' style={styles.input} value={postnatalAge} onChangeText={(newPostnatalAge) => setPostnatalAge(newPostnatalAge)} />
 				<Text style={styles.label}>Postnatal Age</Text>
+				<Text style={styles.suffixText}>days</Text>
 			</View>
 			<View style={styles.inputContainer}>
 				<TextInput keyboardType='numeric' style={styles.input} value={weight} onChangeText={(newWeight) => setWeight(newWeight)} />
 				<Text style={styles.label}>Weight</Text>
+				<Text style={styles.suffixText}>kg</Text>
+			</View>
+			<View style={styles.inputContainer}>
+				<TextInput keyboardType='numeric' style={styles.input} value={height} onChangeText={(newHeight) => setHeight(newHeight)} />
+				<Text style={styles.label}>Height</Text>
+				<Text style={styles.suffixText}>m</Text>
 			</View>
 			<View style={styles.submitContainer}>
 				<TouchableOpacity style={styles.submitButton} onPress={generatePrescription}>
@@ -140,6 +158,7 @@ const styles = StyleSheet.create({
 	inputContainer: {
 		width: "80%",
 		marginBottom: 30,
+		flexDirection: "row",
 	},
 	input: {
 		backgroundColor: colors.white,
@@ -149,6 +168,8 @@ const styles = StyleSheet.create({
 		fontSize: 17,
 		borderColor: colors.primaryColor,
 		borderWidth: 1,
+		width: "100%",
+        fontFamily: "MontserratBold",
 	},
 	label: {
 		position: "absolute",
@@ -160,9 +181,11 @@ const styles = StyleSheet.create({
 		paddingVertical: 3,
 		borderRadius: 10,
 		color: colors.white,
+        fontFamily: "MontserratBold",
 	},
 	dropdownContainer: {
 		marginBottom: 30,
+        fontFamily: "MontserratBold",
 	},
 	dropdown: {
 		marginTop: "-7.5%",
@@ -174,6 +197,7 @@ const styles = StyleSheet.create({
 		borderWidth: 1,
 		width: "80%",
 		alignItems: "center",
+        fontFamily: "MontserratBold",
 	},
 	dropdownInput: {
 		backgroundColor: colors.white,
@@ -183,11 +207,13 @@ const styles = StyleSheet.create({
 		borderColor: colors.primaryColor,
 		borderWidth: 1,
 		width: "80%",
+        fontFamily: "MontserratBold",
 	},
 	dropdownSearch: {
 		width: "100%",
 		borderBottomColor: colors.primaryColor,
 		borderBottomWidth: 1,
+        fontFamily: "MontserratBold",
 	},
 	submitContainer: {
 		width: "80%",
@@ -204,14 +230,29 @@ const styles = StyleSheet.create({
 		justifyContent: "center",
 		fontSize: 18,
 		color: colors.white,
+        fontFamily: "MontserratBold",
 	},
-	logoutIconContainer: {
+	suffixText: {
+		fontSize: 15,
+		fontWeight: "400",
+		marginRight: 15,
 		justifyContent: "center",
 		alignItems: "center",
-		borderRadius: 5,
+		textAlignVertical: "center",
+		// backgroundColor: "red",
+		height: "100%",
+		position: "absolute",
+		right: 0,
+        fontFamily: "MontserratBold",
 	},
-	logoutIcon: {
-		fontSize: 30,
-		color: colors.white,
-	}
+	// logoutIconContainer: {
+	// 	justifyContent: "center",
+	// 	alignItems: "center",
+	// 	borderRadius: 5,
+	// },
+	// logoutIcon: {
+	// 	fontSize: 25,
+	// 	marginRight: 10,
+	// 	color: colors.white,
+	// }
 });
