@@ -19,6 +19,9 @@ if (firebase.apps.length === 0) {
 }
 
 const auth = firebase.auth();
+const credentialsGenerator = (email, password) => {
+  return firebase.auth.EmailAuthProvider.credential(email,password);
+}  
 const firestore = firebase.firestore();
 const createUserDocument = async (user, additionalData) => {
   if (!user) {
@@ -46,6 +49,16 @@ const createUserDocument = async (user, additionalData) => {
   }
 }
 
+const updateUserDocument = async (username, updateData) => {
+	
+
+  if (!username) {
+    return;
+  }
+  const user = firestore.collection("users").doc(username);
+  return user.update(updateData);
+}
+
 const getUserDocument = async (user) => {
   console.log("user in firebase: ", user?.email)
   firestore.collection("users")
@@ -64,4 +77,4 @@ const getUserDocument = async (user) => {
 
 // drugDataFirestore(app);
 
-export { auth, firestore, createUserDocument, getUserDocument }; // app, 
+export { auth, firestore, createUserDocument, getUserDocument, updateUserDocument, credentialsGenerator }; // app, 

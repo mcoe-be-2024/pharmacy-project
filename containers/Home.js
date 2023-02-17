@@ -4,7 +4,8 @@ import { Dropdown } from "../components";
 import SelectDropdown from 'react-native-select-dropdown';
 import { colors } from '../styles/Colors';
 import { auth, firestore } from "../assets/firebase";
-import { MaterialIcons } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons';
+import { Fontisto } from '@expo/vector-icons';
 import drugData from "../assets/drugData.json";
 import { useAuth } from "../hooks";
 
@@ -63,18 +64,18 @@ export default function Home({ navigation }) {
 	const generatePrescription = () => {
 		const drugs = [];
 		drugsDB
-			.where("Name of the drug", "==", drugName)
-			.get()
-			.then((querySnapshot) => {
-				querySnapshot.forEach((doc) => {
-					// console.log(doc.data());
-					drugs.push(doc.data())
-				})
-				setOutput(drugs);
+		.where("Name of the drug", "==", drugName)
+		.get()
+		.then((querySnapshot) => {
+			querySnapshot.forEach((doc) => {
+				// console.log(doc.data());
+				drugs.push(doc.data())
 			})
-			.catch((error) => {
-				alert(error);
-			});
+			setOutput(drugs);
+		})
+		.catch((error) => {
+			alert(error);
+		});
 	}
 
 	useEffect(() => {
@@ -95,7 +96,11 @@ export default function Home({ navigation }) {
 					search="true"
 					searchInputStyle={styles.dropdownSearch}
 					buttonStyle={styles.dropdownInput}
+					buttonTextStyle={styles.dropdownText}
+					rowTextStyle={styles.dropdownText}
 					defaultButtonText="Select drug"
+					renderDropdownIcon={() => {return <Entypo style={styles.dropdownIcon} name="chevron-thin-down" />} }
+					renderSearchInputRightIcon={() => {return <Fontisto style={styles.dropdownIcon} name="search" />} }
 					onSelect={(selectedItem, index) => {
 						setDrugName(selectedItem)
 					}}
@@ -214,6 +219,15 @@ const styles = StyleSheet.create({
 		borderBottomColor: colors.primaryColor,
 		borderBottomWidth: 1,
         fontFamily: "MontserratBold",
+	},
+	dropdownText: {
+        fontFamily: "MontserratBold",
+		fontSize: 17,
+	},
+	dropdownIcon: {
+        fontFamily: "MontserratBold",
+		fontSize: 17,
+		paddingRight: 7,
 	},
 	submitContainer: {
 		width: "80%",

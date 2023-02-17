@@ -64,6 +64,7 @@ const styles = StyleSheet.create({
         width: "55%",
         alignItems: 'center',
         justifyContent: 'space-between',
+        // backgroundColor: "red",
     },
     button: {
         padding: 10,
