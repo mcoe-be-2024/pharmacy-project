@@ -4,7 +4,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
-import { Landing, LoginType, RegisterType, Login, Register, Home, Output, MyProfile, EditProfile, ChangePassword } from '../containers';
+import { Landing, LoginType, RegisterType, Login, Register, Home, Output, MyProfile, EditProfile, ChangePassword, AdminHome, AdminNewEntry } from '../containers';
 import { drawerHeaderStyles, headerStyles } from '../styles/HeaderStyles';
 import { useAuth } from "../hooks";
 import { auth, firestore } from "../assets/firebase";
@@ -18,6 +18,16 @@ function DrugsNavigator() {
             <Drugs.Screen name="Home" component={Home} options={{headerShown: false}} />
             <Drugs.Screen name="Output" component={Output} options={{title: "Prescription", headerShown: false}} />
         </Drugs.Navigator>
+    );
+}
+
+function AdminHomeNavigator() {
+    const AdminHomeNav = createNativeStackNavigator();
+
+    return (
+        <AdminHomeNav.Navigator screenOptions={drawerHeaderStyles} >
+            <AdminHomeNav.Screen name="AdminHome" component={AdminHome} options={{headerShown: false}} />
+        </AdminHomeNav.Navigator>
     );
 }
 
@@ -53,11 +63,18 @@ function DrawerNavigator() {
 						<MaterialIcons style={styles.logoutIcon} name="logout" />
 					</View>
 				</TouchableOpacity>
-			),}} >
-            <Drawer.Screen name="Drugs" component={DrugsNavigator} options={{title: "Home"}} />
+        ),}} >
+            {(currentUser?.userType === "User") ? (
+                <>
+                    <Drawer.Screen name="Drugs" component={DrugsNavigator} options={{title: "Home"}} />
+                </>
+            ) : (
+                <>
+                    <Drawer.Screen name="Admin Home" component={AdminHomeNavigator} options={{title: "Home"}} />
+                    <Drawer.Screen name="AdminNewEntry" component={AdminNewEntry} options={{title: "New Drug"}} />
+                </>
+            )}
             <Drawer.Screen name="MyProfile" component={ProfileNavigator} options={{title: "My Profile",unmountOnBlur: true,}} />
-            {/* <Drawer.Screen name="Profile" component={MyProfile} options={{title: "My Profile"}} />
-            <Drawer.Screen name="EditProfile" component={EditProfile} options={{title: "My Profile"}} /> */}
         </Drawer.Navigator>
     );
 }

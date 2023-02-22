@@ -9,5 +9,7 @@ export { default as Output } from './Output';
 export { default as MyProfile } from './MyProfile';
 export { default as EditProfile } from './EditProfile';
 export { default as ChangePassword } from './ChangePassword';
+export { default as AdminHome } from './AdminHome';
+export { default as AdminNewEntry } from './AdminNewEntry';
 // export { default as EditProfile } from './EditProfile';
 // export { default as Containers } from './Containers';

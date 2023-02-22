@@ -19,6 +19,8 @@ if (firebase.apps.length === 0) {
 }
 
 const auth = firebase.auth();
+const storage = firebase.storage;
+const storageRef = firebase.storage().ref();
 const credentialsGenerator = (email, password) => {
   return firebase.auth.EmailAuthProvider.credential(email,password);
 }  
@@ -77,4 +79,4 @@ const getUserDocument = async (user) => {
 
 // drugDataFirestore(app);
 
-export { auth, firestore, createUserDocument, getUserDocument, updateUserDocument, credentialsGenerator }; // app, 
+export { auth, firestore, storage, storageRef, createUserDocument, getUserDocument, updateUserDocument, credentialsGenerator }; // app, 

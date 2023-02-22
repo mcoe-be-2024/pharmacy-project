@@ -11,6 +11,7 @@ export default MyProfile = ({navigation}) => {
 	const usersDB = firestore.collection("users");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [profileImage, setProfileImage] = useState(defaultAvatar);
 
   useEffect(() => {
     const focusHandler = navigation.addListener("focus",() => {
@@ -22,6 +23,9 @@ export default MyProfile = ({navigation}) => {
           const user = doc.data();
           setName(user?.name);
           setEmail(user?.email);
+          if (user?.profileImage) {
+            setProfileImage(user?.profileImage);
+          }
         })
       })
       .catch((error) => {
@@ -37,7 +41,7 @@ export default MyProfile = ({navigation}) => {
     <View style={styles.container}>
       <View style={styles.profilecontainer}>
         <View style={styles.profilecontent}>
-          <Image style={styles.logo} source={defaultAvatar} />
+          <Image style={styles.logo} source={profileImage === defaultAvatar ? profileImage : {uri: profileImage}} />
           <Text style={styles.name}>{name}</Text>
           <Text style={styles.userInfo}>{email}</Text>
         </View>
@@ -73,19 +77,21 @@ export default MyProfile = ({navigation}) => {
           {/* </View> */}
         </View>
 
-        <View style={styles.item}>
-          {/* <View style={styles.infoContent}> */}
-            {/* <Button text={`Generate${"\n"}Prescription`}>
-              <FontAwesome5 style={styles.buttonIcon} name="notes-medical" /> 
-            </Button> */}
-            <TouchableOpacity>
-              <View style={styles.button}>
+        {currentUser?.userType === "User" &&
+          <View style={styles.item}>
+            {/* <View style={styles.infoContent}> */}
+              {/* <Button text={`Generate${"\n"}Prescription`}>
                 <FontAwesome5 style={styles.buttonIcon} name="notes-medical" /> 
-                <Text style={styles.buttonText}>{`Generate${"\n"}Prescription`}</Text>
-              </View>
-            </TouchableOpacity>
-          {/* </View> */}
-        </View>
+              </Button> */}
+              <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+                <View style={styles.button}>
+                  <FontAwesome5 style={styles.buttonIcon} name="notes-medical" /> 
+                  <Text style={styles.buttonText}>{`Generate${"\n"}Prescription`}</Text>
+                </View>
+              </TouchableOpacity>
+            {/* </View> */}
+          </View>
+        }
       </View>
     </View>
   )
