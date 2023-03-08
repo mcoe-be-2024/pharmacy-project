@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     buttonContainer: {
         flexDirection: "row",
         marginTop: 20,
-        width: "55%",
+        width: "60%",
         alignItems: 'center',
         justifyContent: 'space-between',
         // backgroundColor: "red",

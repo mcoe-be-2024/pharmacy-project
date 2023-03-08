@@ -4,7 +4,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
-import { Landing, LoginType, RegisterType, Login, Register, Home, Output, MyProfile, EditProfile, ChangePassword, AdminHome, AdminNewEntry } from '../containers';
+import { Landing, LoginType, RegisterType, Login, Register, Home, Output, MyProfile, EditProfile, ChangePassword, AdminHome, AdminNewEntry ,AdminEditEntry} from '../containers';
 import { drawerHeaderStyles, headerStyles } from '../styles/HeaderStyles';
 import { useAuth } from "../hooks";
 import { auth, firestore } from "../assets/firebase";
@@ -27,6 +27,7 @@ function AdminHomeNavigator() {
     return (
         <AdminHomeNav.Navigator screenOptions={drawerHeaderStyles} >
             <AdminHomeNav.Screen name="AdminHome" component={AdminHome} options={{headerShown: false}} />
+            <AdminHomeNav.Screen name="AdminEditEntry" component={AdminEditEntry} options={{headerShown: false}} />
         </AdminHomeNav.Navigator>
     );
 }

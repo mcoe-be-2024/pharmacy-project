@@ -19,30 +19,31 @@ export default AdminHome = ({route, navigation}) => {
 	const [deleteModal, setDeleteModal] = useState(false);
 	const [deleteDrug, setDeleteDrug] = useState("");
 
-    useEffect(() => {
-        const focusHandler = navigation.addListener("focus",() => {
-            setDrugName("Select a drug to view");
-            const drugs = [];
-            drugsDB
-            .orderBy("Name of the drug")
-            // .where("Name of the drug", "==", drugName)
-            .get()
-            .then((querySnapshot) => {
-                querySnapshot.forEach((doc) => {
-                    var drug = doc.data();
-                    if (!drugs.includes(drug["Name of the drug"])) {
-                        drugs.push(drug["Name of the drug"]);
-                    }
-                })
+    const getDrugsNamesList = () => {
+        setDrugName("Select a drug to view");
+        const drugs = [];
+        drugsDB
+        .orderBy("Name of the drug")
+        // .where("Name of the drug", "==", drugName)
+        .get()
+        .then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                var drug = doc.data();
+                if (!drugs.includes(drug["Name of the drug"])) {
+                    drugs.push(drug["Name of the drug"]);
+                }
             })
-            .then(() => {
-                setDrugsNamesList(drugs);
-            })
-            .catch((error) => {
-                alert(error);
-            });
+        })
+        .then(() => {
+            setDrugsNamesList(drugs);
+        })
+        .catch((error) => {
+            alert(error);
         });
+    }
 
+    useEffect(() => {
+        const focusHandler = navigation.addListener("focus",getDrugsNamesList);
         return focusHandler;
 	}, [navigation]);
 
@@ -202,6 +203,28 @@ export default AdminHome = ({route, navigation}) => {
     //         setDeleteModal(false);
     //     }
     // }, [deleteDrug]);
+
+    const handleRemoveDeletedDrug = (id) => {
+        setDrugsList(drugsList.filter((drug) => drug?.id !== id));
+    }
+
+    const handleDelete = () => {
+        if (deleteDrug?.drugID) {
+            drugsDB
+            .doc(deleteDrug?.drugID)
+            .delete()
+            .then(() => {
+                alert(`Entry for ${deleteDrug?.drugName} successfully deleted!`);
+                getDrugsNamesList();
+            }).catch((error) => {
+                alert(`Couldn't delete entry for ${deleteDrug?.drugName}! Error:`, error);
+            });
+            handleRemoveDeletedDrug(deleteDrug?.drugID);
+            setDeleteDrug({});
+            setDrugName("Select a drug to view");
+            setDeleteModal(false);
+        }
+    }
     
     return (
         <>
@@ -254,10 +277,13 @@ export default AdminHome = ({route, navigation}) => {
                         <SolutionComp sol={drug["solution compatability"]} />
                         <View style={styles.divider} />
                         <View style={styles.editContainer} >
-                            <TouchableOpacity style={styles.editButton} >
+                            <TouchableOpacity style={styles.editButton} onPress={()=>navigation.navigate('AdminEditEntry',{drugID: drug.id})} >
                                 <Text style={styles.editText}>Edit</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={styles.deleteButton} onPress={() => setDeleteModal(true)}> 
+                            <TouchableOpacity style={styles.deleteButton} onPress={() => {
+                                setDeleteDrug({drugID: drug.id, drugName: drug["Name of the drug"]});
+                                setDeleteModal(true);
+                            }}> 
                                 <Text style={styles.editText}>Delete</Text>
                             </TouchableOpacity>
                         </View>
@@ -278,7 +304,7 @@ export default AdminHome = ({route, navigation}) => {
                                     <Text style={styles.editText}>Cancel</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity style={styles.modalButtonDanger} onPress={() => setDeleteModal(false)}>
-                                    <Text style={styles.editText}>Delete</Text>
+                                    <Text style={styles.editText} onPress={handleDelete}>Delete</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>

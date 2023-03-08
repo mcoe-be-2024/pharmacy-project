@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, TextInput, ScrollView, View, TouchableOpacity ,Alert } from 'react-native';
+import { StyleSheet, Text, TextInput, ScrollView, View, TouchableOpacity ,Alert} from 'react-native';
 import {colors} from '../styles/Colors';
 import { auth, firestore } from '../assets/firebase';
 import { useAuth } from "../hooks";
@@ -7,7 +7,8 @@ import SelectDropdown from 'react-native-select-dropdown';
 import { Entypo } from '@expo/vector-icons';
 import { Fontisto } from '@expo/vector-icons';
 
-export default AdminNewEntry = ({navigation}) => {
+export default AdminEditEntry = ({navigation,route}) => {
+    const {drugID} = route.params;
     const [name, setName] = useState("");
     const [lowerGestAge, setLowerGestAge] = useState("");
     const [upperGestAge, setUpperGestAge] = useState("");
@@ -31,14 +32,15 @@ export default AdminNewEntry = ({navigation}) => {
     const doseUnitList = ["mg/kg","units"];
     const doseDaysList = ["day","dose"];
 
-    const handleAddNewEntry = () => {
+    const handleEditEntry = () => {
         
     }
-    const showAlert = (e, text,notice) => {
+
+    const showAlert1 = (e, text1,notice1) => {
         e.preventDefault();
         Alert.alert(
-            notice,
-            text,
+            notice1,
+            text1,
             [
             {
                 text: 'Cancel',
@@ -53,7 +55,7 @@ export default AdminNewEntry = ({navigation}) => {
     return (
         <>
         <ScrollView contentContainerStyle={styles.container}>
-            <Text style={[styles.title, {marginBottom: 30,paddingTop: 35}]}>New Entry</Text>
+            <Text style={[styles.title, {marginBottom: 30,paddingTop: 35}]}>Edit Entry</Text>
             <View style={styles.inputContainer}>
                 <TextInput style={styles.input} value={name} onChangeText={(newName) => setName(newName)} />
                 <Text style={styles.label}>Name</Text>
@@ -143,16 +145,16 @@ export default AdminNewEntry = ({navigation}) => {
             <View style={styles.inputContainer}>
                 <TextInput style={[styles.input, {width: "47%"}]} placeholder="Minimum" value={lowerWeight} onChangeText={(newLowerWeight) => setLowerWeight(newLowerWeight)} />
                 <TextInput style={[styles.input, {width: "47%"}]} placeholder="Maximum" value={upperWeight} onChangeText={(newUpperWeight) => setUpperWeight(newUpperWeight)} />
-                <Text style={styles.label} onPress={(e) => showAlert(e,'Enter the weight in kg','Weight unit')}>Weight &#9432;</Text>
+                <Text style={styles.label} onPress={(e) => showAlert1(e,'Enter the weight in kg','Weight unit')}>Weight &#9432;</Text>
             </View>
             <View style={styles.inputContainer}>
                 <TextInput style={[styles.input, {width: "47%"}]} placeholder="Minimum" value={lowerHeight} onChangeText={(newLowerHeight) => setLowerHeight(newLowerHeight)} />
                 <TextInput style={[styles.input, {width: "47%"}]} placeholder="Maximum" value={upperHeight} onChangeText={(newUpperHeight) => setUpperHeight(newUpperHeight)} />
-                <Text style={styles.label} onPress={(e) => showAlert(e,'Enter the height in centimeters ','Height unit')}>Height &#9432;</Text>
+                <Text style={styles.label} onPress={(e) => showAlert1(e,'Enter the height in centimeters ','Height unit')}>Height &#9432;</Text>
             </View>
             <View style={styles.submitContainer}>
-                <TouchableOpacity style={styles.submitButton} onPress={handleAddNewEntry}>
-                    <Text style={styles.submitText}>Add</Text>
+                <TouchableOpacity style={styles.submitButton} onPress={handleEditEntry}>
+                    <Text style={styles.submitText}>Update</Text>
                 </TouchableOpacity>
             </View>
         </ScrollView>
